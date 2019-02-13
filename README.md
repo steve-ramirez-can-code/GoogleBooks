@@ -6,6 +6,13 @@ Would like to add the possibility to add multiple search queries at a time and t
 
 Will most likely be added to Heroku later today. Will update log with link when deployed. 
 
+UPDATE: Heroku Link is https://readingassistant.herokuapp.com/
+
+Potentially new features for app:
+- Ability to choose how many search results are returned. Currenly only 10 at a time. 
+- Ability to remove some search results and populate with new ones.
+
+
 
 
 
