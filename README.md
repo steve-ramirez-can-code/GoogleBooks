@@ -1,14 +1,24 @@
-### Overview
+## Overview
 
 This app was created as coding challenge at first but I'd like to expand upon and make it a more fleshed out application. 
 
 This app is desgined to interact with the GoogleBooks API and return all pertinent information related to potential search queries and criteria.
 
-## Updates
+### How to get started with installation
+
+```
+git clone https://github.com/steve-ramirez-can-code/GoogleBooks.git
+cd src
+npm install
+npm start
+//this starts the frontend and brings up a new tab with the app running. 
+```
+
+### Updates
 
 Added all of my pertinent code. Was able to get a successfully satisfactory product. Would like to work on any more potential edge cases. Was able to deal with empty strings, letters being used in the ISBN search query, nonsensical queries that would return an error, and null values. 
 
-## Potential Features
+### Potential Features
 
 Would like to add the possibility to add multiple search queries at a time and to make the app a little more aesthetically pleasing. For now, it's adequate and should be able to do what it was initally intended to do.  
 
