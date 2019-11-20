@@ -1,14 +1,10 @@
 /*Create an application that allows you to use the Google Books API to search for books, and deploy it somewhere that we can access through a web browser.
-
 This application should allow you to:
 Type in a query and display a list of books matching that query.
 Each item in the list should include the book's author, title, and publishing company, as well as a picture of the book.
 From each list item, you should also be able to navigate to more information about the book, but this information does not necessarily need to appear on a page within your application. In other words, this could link out to an external site with more information about that particular book.
-
 There are no constraints n odeployment platform. We recommend using Heroku because it’s free and simple to set up, but it's your choice. For programming language, choose one of the options listed in the Code Review repo, but not the same language you selected for your code review.
-
 Your submission doesn’t need to be perfect. After we receive your submission we'll review your code, respond to you with our feedback, and give you an opportunity to respond to our feedback and make improvements to your code before you re-submit a second and final version.
-
 That said, we would still like to see your best work, which should demonstrate external quality (for example: solves the problem, handles edge cases, usability), internal quality (for example: decoupling, testing, readability), as well as some idea of your process and approach (via your version control history and README).
 */
 
@@ -24,6 +20,7 @@ class App extends Component {
       method:"Use the dropdown menu to choose search criterion",
       query:"",
       books:[],
+      message:''
 
     }
   }
@@ -43,14 +40,18 @@ class App extends Component {
   handleClick = (event) =>{
   event.preventDefault();
   if((this.state.query==="")||(this.state.method==="")){
-    alert("Please change criteria and/or type something before submitting.");
+    this.setState({
+        message:"Please change criterion and/or type something before submitting."
+    })
     return
   }
 
 
   if(this.state.method === "ISBN"){
     if(!Number.isInteger(Number(this.state.query))){
-     alert("For ISBN, query must be a 10 or 13 digit number")
+     this.setState({
+        message:"For ISBN, query must be a 10 or 13 digit number"
+        })
     }
     else if(Number.isInteger((Number((this.state.query))))){
   
@@ -66,10 +67,9 @@ class App extends Component {
 
       this.setState({
         books: response.data
-      })
+        })
       }
-    })
-        .catch((error)=>{
+    }).catch((error)=>{
           console.log(error)
       })
     }
@@ -79,20 +79,20 @@ class App extends Component {
   else if(this.state.method === "Title"){
       
     axios.get("https://www.googleapis.com/books/v1/volumes?q=inTitle:" + this.state.query)
-          .then((response) => {
-            if(response.data.totalItems===0){
-              alert("Your search had no results. Please try a new search.");
-              return
-            }
-            else{ 
-              this.setState({
-                books: response.data
-              })
-            }
-          })
-          .catch((error)=> {
-            console.log(error)
-          })
+        .then((response) => {
+        if(response.data.totalItems===0){
+            alert("Your search had no results. Please try a new search.");
+            return
+        }
+        else{ 
+            this.setState({
+            books: response.data
+            })
+        }
+        })
+        .catch((error)=> {
+        console.log(error)
+        })
     }
 
     else if(this.state.method === "Keyword"){
@@ -140,7 +140,9 @@ class App extends Component {
     axios.get("https://www.googleapis.com/books/v1/volumes?q=subject:" + this.state.query)
     .then((response) => {
       if(response.data.totalItems===0){
-        alert("Your search had no results. Please try a new search.");
+        this.setState({
+            message: "Your search had no results. Please try a new search."
+        })
         return
       }
       else{ 
@@ -159,9 +161,10 @@ class App extends Component {
   if (this.state.books!=""){
     
     return (
-      <div className="App">
-      <p>
+      <div className="app">
+      <p className="app-title">
             Google Books!
+            {this.state.books? "in the if books exists": " in the if books doesn't exist"}
       </p>
           Enter your book query search below:
 
@@ -180,7 +183,6 @@ class App extends Component {
             </select>
                   <input type="text" id="query" onChange={this.handleQuery}>
             </input>
-          
             <input type="submit" onClick = {this.handleClick}>
             </input>
           </form>
@@ -216,12 +218,12 @@ class App extends Component {
             }
 else {
   return (
-    <div className="App">
-    <p>
+    <div className="app">
+    <p className="app-title">
           Google Books!
+          {this.state.books? "in the else books exists": "in the else books doesn't exist"}
     </p>
         Enter your book query search below:
-
         <br/>
         Query can be a word in the title, an author's name, ISBN, genre, anything really.
         <br/>
@@ -245,6 +247,9 @@ else {
         <br/>
         {this.state.query}
         <br/>
+        <br/>
+        
+        {this.state.message}
         </div>
     )}
   }
